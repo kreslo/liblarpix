@@ -1,0 +1,6 @@
+#busybox devmem 0x43c00000 32 49  #  2us
+#busybox devmem 0x43c00000 32 24   #1 us
+busybox devmem 0x43c00000 32 4   #10 MHz
+busybox devmem 0x43c10008 64 0x0fffffffffffffff  #send
+busybox devmem 0x43c10000 64 #read received
+

@@ -1,0 +1,15 @@
+gcc -Wall -g -c pixlar.c -o pixlar.o
+ar rsv pixlar.a pixlar.o
+gcc dump_loop.c -o dump_loop pixlar.a
+gcc send_loopA.c -o send_loopA pixlar.a
+gcc send_loopB.c -o send_loopB pixlar.a
+gcc pixlar_readA.c -o pixlar_readA pixlar.a
+gcc pixlar_readB.c -o pixlar_readB pixlar.a
+gcc pixlar_writeA.c -o pixlar_writeA pixlar.a
+gcc pixlar_writeB.c -o pixlar_writeB pixlar.a
+gcc rgbled.c -o rgbled pixlar.a
+gcc -o pixlar_dataserver pixlar_dataserver.c pixlar.a -lzmq -std=gnu99 -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast
+gcc -o pixlar_cmdserver pixlar_cmdserver.c pixlar.a -lzmq -std=gnu99 -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast
+gcc -o pixlar_store pixlar_store.c pixlar.a -lzmq -std=gnu99 -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast
+gcc -o pixlar_ctl pixlar_ctl.c pixlar.a -lzmq -std=gnu99 -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast
+
