@@ -1,0 +1,23 @@
+#send magic word to A channel
+busybox devmem 0x43c01008 64 0x0ff5a5a5a5a5a5a5
+#read A channel and print
+echo 'Channel A:'
+busybox devmem 0x43c01000 64
+
+#send magic word to B channel
+busybox devmem 0x43c02008 64 0x0ff5b5b5b5b5b5b5
+#read B channel and print
+echo 'Channel B:'
+busybox devmem 0x43c02000 64 
+
+#send magic word to C channel
+busybox devmem 0x43c03008 64 0x0ff5b5b5b5b5b5b5
+#read C channel and print
+echo 'Channel C:'
+busybox devmem 0x43c03000 64 
+
+#send magic word to D channel
+busybox devmem 0x43c04008 64 0x0ff5b5b5b5b5b5b5
+#read D channel and print
+echo 'Channel D:'
+busybox devmem 0x43c04000 64 

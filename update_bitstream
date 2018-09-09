@@ -1,0 +1,5 @@
+f="/home/ubuntu/bitstream.bit"
+if [ -f $f ]; then
+ cat $f > /dev/xdevcfg
+fi
+
