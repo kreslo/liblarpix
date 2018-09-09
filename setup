@@ -1,6 +1,16 @@
-#busybox devmem 0x43c00000 32 49  #  2us
-#busybox devmem 0x43c00000 32 24   #1 us
-busybox devmem 0x43c00000 32 4   #10 MHz
-busybox devmem 0x43c10008 64 0x0fffffffffffffff  #send
-busybox devmem 0x43c10000 64 #read received
+
+#busybox devmem 0x43c00000 32 24   #2.. MHz
+busybox devmem 0x43c00000 32 6   #10.4 MHz
+busybox devmem 0x43c00004 32 1   #Reset
+busybox devmem 0x43c00004 32 0   #Reset
+
+insmod /home/ubuntu/DriversWork/uart64n/uart64.ko
+chmod 666 /dev/uart*
+
+
+/home/ubuntu/pixlar_write_disableall 207 207
+/home/ubuntu/pixlar_write_disableall 250 250
+/home/ubuntu/pixlar_write_disableall 249 249
+
+#ifconfig eth0 130.92.139.22 netmask 255.255.255.0 broadcast 130.92.139.255  gateway 130.92.139.1
 

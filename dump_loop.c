@@ -6,18 +6,12 @@
 #include <stdint.h>
 #include "pixlar.h"
 
-void dump(volatile unsigned char * ptr)
-{
-   int i;
-     for (i = 0; i < 8; ++i)
-        printf("%02x", *(unsigned char*)(ptr+7-i));
-        printf("\n");
- 
-}
 
 int main() {
    off_t offsetA = UART54_A_RECV;
     off_t offsetB = UART54_B_RECV;
+    off_t offsetC = UART54_C_RECV;
+    off_t offsetD = UART54_D_RECV;
     size_t len = 8;
 
     // Truncate offset to a multiple of the page size, or mmap will fail.
@@ -26,6 +20,10 @@ int main() {
     off_t page_offsetA = offsetA - page_baseA;
     off_t page_baseB = (offsetB / pagesize) * pagesize;
     off_t page_offsetB = offsetB - page_baseB;
+    off_t page_baseC = (offsetC / pagesize) * pagesize;
+    off_t page_offsetC = offsetC - page_baseC;
+    off_t page_baseD = (offsetD / pagesize) * pagesize;
+    off_t page_offsetD = offsetD - page_baseD;
 
     int fd = open("/dev/mem", O_RDWR | O_SYNC);
 //    volatile unsigned char *mem = mmap(NULL, page_offset + len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, page_base);
@@ -40,6 +38,18 @@ int main() {
         return -1;
     }
 
+    volatile unsigned char *memC = mmap(NULL, page_offsetC + len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, page_baseC);
+    if (memC == MAP_FAILED) {
+        perror("Can't map C memory");
+        return -1;
+    }
+
+    volatile unsigned char *memD = mmap(NULL, page_offsetD + len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, page_baseD);
+    if (memD == MAP_FAILED) {
+        perror("Can't map D memory");
+        return -1;
+    }
+
     size_t i;
     
     while(1)
@@ -47,14 +57,26 @@ int main() {
     if(memA[page_offsetA+len-1]>=0x80)
     {
     printf("A:");
-    dump(memA+page_offsetA);
+    dump_decoded(*(volatile uint64_t*)(memA+page_offsetA));
     memA[page_offsetA+len-1]=0;
     } 
     if(memB[page_offsetB+len-1]>=0x80)
     {
     printf("B:");
-    dump(memB+page_offsetB);
+    dump_decoded(*(volatile uint64_t*)(memB+page_offsetB));
     memB[page_offsetB+len-1]=0;
+    } 
+    if(memC[page_offsetC+len-1]>=0x80)
+    {
+    printf("C:");
+    dump_decoded(*(volatile uint64_t*)(memC+page_offsetC));
+    memC[page_offsetC+len-1]=0;
+    } 
+    if(memD[page_offsetD+len-1]>=0x80)
+    {
+    printf("D:");
+    dump_decoded(*(volatile uint64_t*)(memD+page_offsetD));
+    memD[page_offsetD+len-1]=0;
     } 
 }
 
